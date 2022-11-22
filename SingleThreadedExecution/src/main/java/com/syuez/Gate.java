@@ -25,26 +25,11 @@ public class Gate {
      */
     private Semaphore semaphore = new Semaphore(1);
     /**
-     * 使用原子类来同步线程
-     */
-    private AtomicBoolean locked = new AtomicBoolean(false);
-
-    public boolean isLocked() {
-        return locked.get();
-    }
-
-    /**
      * 通过门
      * @param name 通过之人的姓名
      * @param address 通过之人的出生地
      */
     public void pass(String name, String address) {
-//        locked.set(true);
-//        this.counter++;
-//        this.name = name;
-//        this.address = address;
-//        check();
-//        locked.set(false);
         try {
             semaphore.acquire();
             this.counter++;

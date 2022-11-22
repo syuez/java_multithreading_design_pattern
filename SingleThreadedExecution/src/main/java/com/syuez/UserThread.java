@@ -7,8 +7,8 @@ public class UserThread extends Thread {
     /**
      * 要通过的门
      */
-    // private final Gate gate;
-    private final GateSafety gate;
+    private final Gate gate;
+    // private final GateSafety gate;
     /**
      * 姓名
      */
@@ -18,7 +18,7 @@ public class UserThread extends Thread {
      */
     private final String myAddress;
 
-    public UserThread(GateSafety gate, String myName, String myAddress) {
+    public UserThread(Gate gate, String myName, String myAddress) {
         this.gate = gate;
         this.myName = myName;
         this.myAddress = myAddress;
