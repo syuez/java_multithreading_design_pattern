@@ -1,5 +1,8 @@
 package com.syuez;
 
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * 非线程安全的 Gate（门）类，
  * 表示的是人通过的门
@@ -17,6 +20,18 @@ public class Gate {
      * 最后一个通行者的“出生地”
      */
     private String address = "Nowhere";
+    /**
+     * 使用信号量来同步线程
+     */
+    private Semaphore semaphore = new Semaphore(1);
+    /**
+     * 使用原子类来同步线程
+     */
+    private AtomicBoolean locked = new AtomicBoolean(false);
+
+    public boolean isLocked() {
+        return locked.get();
+    }
 
     /**
      * 通过门
@@ -24,15 +39,27 @@ public class Gate {
      * @param address 通过之人的出生地
      */
     public void pass(String name, String address) {
-        this.counter++;
-        this.name = name;
-        this.address = address;
-        /*
-         * 检查门的当前状态（最后一个通行者的记录数据）是否正确。
-         * 如果姓名与出生地首字母不同，那么说明记录数据是异常的。
-         * 当发现记录数据异常时，则显示 Broken（出错了）的信息。
-         * */
-        check();
+//        locked.set(true);
+//        this.counter++;
+//        this.name = name;
+//        this.address = address;
+//        check();
+//        locked.set(false);
+        try {
+            semaphore.acquire();
+            this.counter++;
+            this.name = name;
+            this.address = address;
+            /*
+             * 检查门的当前状态（最后一个通行者的记录数据）是否正确。
+             * 如果姓名与出生地首字母不同，那么说明记录数据是异常的。
+             * 当发现记录数据异常时，则显示 Broken（出错了）的信息。
+             * */
+            check();
+            semaphore.release();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String toString() {
