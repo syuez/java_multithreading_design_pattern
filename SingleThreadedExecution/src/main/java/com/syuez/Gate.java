@@ -41,9 +41,10 @@ public class Gate {
              * 当发现记录数据异常时，则显示 Broken（出错了）的信息。
              * */
             check();
-            semaphore.release();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+        } finally {
+            semaphore.release();
         }
     }
 
