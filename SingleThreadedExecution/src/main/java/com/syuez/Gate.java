@@ -1,7 +1,6 @@
 package com.syuez;
 
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 非线程安全的 Gate（门）类，
